@@ -79,13 +79,18 @@ func (g *Grid) ComputeNextGridN(n int) ([]Cell, []Cell) {
 func (g *Grid) Tick() ([]Cell, []Cell) {
 	bornCells, diedCells := g.ComputeNextGrid()
 
+	g.mutex.Lock()
+	defer g.mutex.Unlock()
+
 	for _, c := range bornCells {
-		g.SetCell(c.X, c.Y)
+		g.cells[c] = true
 	}
 
 	for _, c := range diedCells {
-		g.ClearCell(c.X, c.Y)
+		delete(g.cells, c)
 	}
+
+	g.notifyObservers(newTickObserverEvent(bornCells, diedCells))
 
 	return bornCells, diedCells
 }
@@ -94,13 +99,18 @@ func (g *Grid) Tick() ([]Cell, []Cell) {
 func (g *Grid) Step(n int) ([]Cell, []Cell) {
 	bornCells, diedCells := g.ComputeNextGridN(n)
 
+	g.mutex.Lock()
+	defer g.mutex.Unlock()
+
 	for _, c := range bornCells {
-		g.SetCell(c.X, c.Y)
+		g.cells[c] = true
 	}
 
 	for _, c := range diedCells {
-		g.ClearCell(c.X, c.Y)
+		delete(g.cells, c)
 	}
+
+	g.notifyObservers(newStepObserverEvent(n, bornCells, diedCells))
 
 	return bornCells, diedCells
 }

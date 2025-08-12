@@ -6,6 +6,11 @@ type Cell struct {
 	Y int
 }
 
+func (c Cell) Inside(rect *Rectangle) bool {
+	return c.X >= rect.MinX && c.X <= rect.MaxX &&
+		c.Y >= rect.MinY && c.Y <= rect.MaxY
+}
+
 // NewCellFromCords returns a cell with the given coordinates.
 func NewCellFromCords(x, y int) *Cell {
 	return &Cell{X: x, Y: y}

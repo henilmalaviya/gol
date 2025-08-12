@@ -5,7 +5,8 @@ import "sync"
 // Grid holds the set of live cells and provides concurrent-safe operations
 // to evolve and query a Game of Life universe.
 type Grid struct {
-	cells map[Cell]bool
+	cells     map[Cell]bool
+	observers map[Observer]struct{}
 
 	mutex sync.RWMutex
 }
@@ -14,18 +15,21 @@ type Grid struct {
 func (g *Grid) SetCell(x, y int) {
 	c := NewCellFromCords(x, y)
 	g.mutex.Lock()
-	defer g.mutex.Unlock()
+
 	if _, exists := g.cells[*c]; !exists {
 		g.cells[*c] = true
 	}
+	g.mutex.Unlock()
+	g.notifyObservers(newSetCellObserverEvent(*c))
 }
 
 // ClearCell marks the cell at (x, y) as dead.
 func (g *Grid) ClearCell(x, y int) {
 	c := NewCellFromCords(x, y)
 	g.mutex.Lock()
-	defer g.mutex.Unlock()
 	delete(g.cells, *c)
+	g.mutex.Unlock()
+	g.notifyObservers(newClearCellObserverEvent(*c))
 }
 
 // IsAlive reports whether the cell at (x, y) is alive.
@@ -45,6 +49,7 @@ func (g *Grid) Population() int {
 
 func (g *Grid) Clear() {
 	g.mutex.Lock()
-	defer g.mutex.Unlock()
 	clear(g.cells)
+	g.mutex.Unlock()
+	g.notifyObservers(newClearGridObserverEvent())
 }
