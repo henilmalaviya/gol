@@ -19,8 +19,12 @@ func (g *Grid) Translate(dx, dy int) {
 // Bitmap returns a dense boolean matrix covering rect where true marks a live cell.
 // bitmap[y][x] corresponds to the cell at (rect.MinX + x, rect.MinY + y).
 func (g *Grid) Bitmap(rect Rectangle) [][]bool {
-	width := rect.MaxX - rect.MinX + 1
-	height := rect.MaxY - rect.MinY + 1
+	width := rect.Width()
+	height := rect.Height()
+
+	if width <= 0 || height <= 0 {
+		return [][]bool{}
+	}
 
 	bitmap := make([][]bool, height)
 	for y := range height {
@@ -46,7 +50,7 @@ func (g *Grid) Subgrid(rect Rectangle) *Grid {
 	g.mutex.RLock()
 	defer g.mutex.RUnlock()
 	for c := range g.cells {
-		if c.X >= rect.MinX && c.X <= rect.MaxX && c.Y >= rect.MinY && c.Y <= rect.MaxY && g.cells[c] {
+		if c.Inside(&rect) && g.cells[c] {
 			ng.cells[c] = true
 		}
 	}
