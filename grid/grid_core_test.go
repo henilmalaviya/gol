@@ -52,3 +52,14 @@ func TestPopulation(t *testing.T) {
 		t.Errorf("Population should be 2, but it's %d", g.Population())
 	}
 }
+
+func TestClear(t *testing.T) {
+	g := NewGridFromCells(Cell{X: 0, Y: 0}, Cell{X: 1, Y: 1})
+	g.Clear()
+	if g.Population() != 0 {
+		t.Errorf("Population should be 0 after clearing the grid, but it's %d", g.Population())
+	}
+	if g.IsAlive(0, 0) {
+		t.Errorf("Cell (0,0) should be dead after clearing the grid, but it's alive")
+	}
+}

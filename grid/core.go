@@ -42,3 +42,9 @@ func (g *Grid) Population() int {
 	defer g.mutex.RUnlock()
 	return len(g.cells)
 }
+
+func (g *Grid) Clear() {
+	g.mutex.Lock()
+	defer g.mutex.Unlock()
+	clear(g.cells)
+}
