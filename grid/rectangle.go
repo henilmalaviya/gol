@@ -24,3 +24,14 @@ func (r *Rectangle) Width() int {
 func (r *Rectangle) Height() int {
 	return int(math.Abs(float64(r.MaxY-r.MinY))) + 1
 }
+
+func (r *Rectangle) ToArray() [4]int {
+	return [4]int{r.MinX, r.MinY, r.MaxX, r.MaxY}
+}
+
+func (r *Rectangle) ToNestedArray() [2][2]int {
+	return [2][2]int{
+		{r.MinX, r.MinY},
+		{r.MaxX, r.MaxY},
+	}
+}
