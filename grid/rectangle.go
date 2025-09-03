@@ -40,6 +40,17 @@ func (r *Rectangle) PointInside(x, y int) bool {
 	return x >= r.X1 && x <= r.X2 && y >= r.Y1 && y <= r.Y2
 }
 
+func (r *Rectangle) Normalized() *Rectangle {
+	nr := NewRectangle(r.X1, r.Y1, r.X2, r.Y2)
+	if nr.X1 > nr.X2 {
+		nr.X1, nr.X2 = nr.X2, nr.X1
+	}
+	if nr.Y1 > nr.Y2 {
+		nr.Y1, nr.Y2 = nr.Y2, nr.Y1
+	}
+	return nr
+}
+
 func (r *Rectangle) ToNestedArray() [2][2]int {
 	return [2][2]int{
 		{r.X1, r.Y1},

@@ -19,6 +19,9 @@ func (g *Grid) Translate(dx, dy int) {
 // Bitmap returns a dense boolean matrix covering rect where true marks a live cell.
 // bitmap[y][x] corresponds to the cell at (rect.MinX + x, rect.MinY + y).
 func (g *Grid) Bitmap(rect Rectangle) [][]bool {
+
+	rect = *rect.Normalized()
+
 	width := rect.Width()
 	height := rect.Height()
 
@@ -32,7 +35,7 @@ func (g *Grid) Bitmap(rect Rectangle) [][]bool {
 	}
 
 	// Use Subgrid to filter cells within rect, avoiding duplicate bounds checks
-	sub := g.SubgridNormalized(rect)
+	sub := g.Subgrid(rect)
 	// No need to lock sub since it's isolated and not shared, but keep symmetry
 	sub.mutex.RLock()
 	for c := range sub.cells {
