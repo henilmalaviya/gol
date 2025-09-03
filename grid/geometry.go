@@ -103,3 +103,20 @@ func (g *Grid) Bounds() Rectangle {
 
 	return *NewRectangle(minX, minY, maxX, maxY)
 }
+
+// GetLiveCellCoordinates returns a 2D array containing the coordinates of all live cells in the grid.
+// Each element is a [2]int array where index 0 is the X coordinate and index 1 is the Y coordinate.
+func (g *Grid) GetLiveCellCoordinates() [][2]int {
+	g.mutex.RLock()
+	defer g.mutex.RUnlock()
+
+	// Pre-allocate the result slice with the exact capacity needed
+	coordinates := make([][2]int, 0, len(g.cells))
+
+	// Extract coordinates from all live cells
+	for cell := range g.cells {
+		coordinates = append(coordinates, [2]int{cell.X, cell.Y})
+	}
+
+	return coordinates
+}
