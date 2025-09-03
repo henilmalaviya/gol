@@ -7,8 +7,7 @@ type Cell struct {
 }
 
 func (c Cell) Inside(rect *Rectangle) bool {
-	return c.X >= rect.MinX && c.X <= rect.MaxX &&
-		c.Y >= rect.MinY && c.Y <= rect.MaxY
+	return rect.PointInside(c.X, c.Y)
 }
 
 func (c Cell) GetNeighbors() [8]Cell {

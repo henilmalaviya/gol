@@ -49,7 +49,7 @@ func TestNewGridFromBitmap(t *testing.T) {
 		{true, false},
 		{false, true},
 	}
-	rect := Rectangle{MinX: 1, MinY: 1}
+	rect := Rectangle{X1: 1, Y1: 1}
 	g := NewGridFromBitmap(rect, bitmap)
 	if g.Population() != 2 {
 		t.Errorf("Expected population 2, got %d", g.Population())

@@ -36,7 +36,7 @@ func (g *Grid) Bitmap(rect Rectangle) [][]bool {
 	// No need to lock sub since it's isolated and not shared, but keep symmetry
 	sub.mutex.RLock()
 	for c := range sub.cells {
-		bitmap[c.Y-rect.MinY][c.X-rect.MinX] = true
+		bitmap[c.Y-rect.Y1][c.X-rect.X1] = true
 	}
 	sub.mutex.RUnlock()
 
@@ -61,7 +61,7 @@ func (g *Grid) Subgrid(rect Rectangle) *Grid {
 // translated so that (rect.MinX, rect.MinY) becomes (0, 0).
 func (g *Grid) SubgridNormalized(rect Rectangle) *Grid {
 	ng := g.Subgrid(rect)
-	ng.Translate(-rect.MinX, -rect.MinY)
+	ng.Translate(-rect.X1, -rect.Y1)
 	return ng
 }
 

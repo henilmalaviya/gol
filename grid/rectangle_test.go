@@ -41,6 +41,11 @@ func TestRectangle_Width(t *testing.T) {
 			rect: *NewRectangle(-1, -1, 1, 1),
 			want: 3,
 		},
+		{
+			name: "inverted center block",
+			rect: *NewRectangle(-1, 1, 1, -1),
+			want: 3,
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -85,6 +90,11 @@ func TestRectangle_Height(t *testing.T) {
 		{
 			name: "center block",
 			rect: *NewRectangle(-1, -1, 1, 1),
+			want: 3,
+		},
+		{
+			name: "inverted center block",
+			rect: *NewRectangle(-1, 1, 1, -1),
 			want: 3,
 		},
 	}

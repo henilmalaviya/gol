@@ -46,7 +46,7 @@ func NewGridFromBitmap(rect Rectangle, bitmap [][]bool) *Grid {
 		row := bitmap[y]
 		for x := 0; x < len(row); x++ {
 			if row[x] {
-				g.cells[Cell{X: rect.MinX + x, Y: rect.MinY + y}] = true
+				g.cells[Cell{X: rect.X1 + x, Y: rect.Y1 + y}] = true
 			}
 		}
 	}
