@@ -5,19 +5,6 @@ import (
 	"testing"
 )
 
-func TestGetNeighborCells(t *testing.T) {
-	g := NewGrid()
-	neighbors := g.getNeighborCells(0, 0)
-	expected := [8]Cell{
-		{X: -1, Y: -1}, {X: 0, Y: -1}, {X: 1, Y: -1},
-		{X: -1, Y: 0}, {X: 1, Y: 0},
-		{X: -1, Y: 1}, {X: 0, Y: 1}, {X: 1, Y: 1},
-	}
-	if neighbors != expected {
-		t.Errorf("getNeighborCells(0,0) failed. Expected %v, got %v", expected, neighbors)
-	}
-}
-
 func TestComputeNextGrid(t *testing.T) {
 	// Still life: block
 	block := NewGridFromCells(Cell{X: 0, Y: 0}, Cell{X: 1, Y: 0}, Cell{X: 0, Y: 1}, Cell{X: 1, Y: 1})

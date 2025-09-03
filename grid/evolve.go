@@ -1,19 +1,5 @@
 package grid
 
-// getNeighborCells returns the 8 neighboring cells around (x, y).
-func (g *Grid) getNeighborCells(x, y int) [8]Cell {
-	return [8]Cell{
-		{X: x - 1, Y: y - 1},
-		{X: x, Y: y - 1},
-		{X: x + 1, Y: y - 1},
-		{X: x - 1, Y: y},
-		{X: x + 1, Y: y},
-		{X: x - 1, Y: y + 1},
-		{X: x, Y: y + 1},
-		{X: x + 1, Y: y + 1},
-	}
-}
-
 // ComputeNextGrid computes the next generation and returns the cells that
 // will be born and that will die, without mutating the current grid.
 func (g *Grid) ComputeNextGrid() ([]Cell, []Cell) {
@@ -24,7 +10,7 @@ func (g *Grid) ComputeNextGrid() ([]Cell, []Cell) {
 	candidates := make(map[Cell]struct{})
 
 	for cell := range g.cells {
-		neighbors := g.getNeighborCells(cell.X, cell.Y)
+		neighbors := cell.GetNeighbors()
 
 		candidates[cell] = struct{}{}
 		for _, n := range neighbors {
@@ -38,14 +24,14 @@ func (g *Grid) ComputeNextGrid() ([]Cell, []Cell) {
 
 		for dy := -1; dy <= 1; dy++ {
 			for dx := -1; dx <= 1; dx++ {
-				if dx == 0 && dy == 0 {
-					continue
-				}
-
 				if g.cells[Cell{X: cell.X + dx, Y: cell.Y + dy}] {
 					aliveNeighborCount++
 				}
 			}
+		}
+
+		if isCellAlive {
+			aliveNeighborCount--
 		}
 
 		if !isCellAlive && aliveNeighborCount == 3 {

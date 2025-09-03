@@ -11,6 +11,19 @@ func (c Cell) Inside(rect *Rectangle) bool {
 		c.Y >= rect.MinY && c.Y <= rect.MaxY
 }
 
+func (c Cell) GetNeighbors() [8]Cell {
+	return [8]Cell{
+		{X: c.X - 1, Y: c.Y - 1},
+		{X: c.X, Y: c.Y - 1},
+		{X: c.X + 1, Y: c.Y - 1},
+		{X: c.X - 1, Y: c.Y},
+		{X: c.X + 1, Y: c.Y},
+		{X: c.X - 1, Y: c.Y + 1},
+		{X: c.X, Y: c.Y + 1},
+		{X: c.X + 1, Y: c.Y + 1},
+	}
+}
+
 // NewCellFromCords returns a cell with the given coordinates.
 func NewCellFromCords(x, y int) *Cell {
 	return &Cell{X: x, Y: y}
