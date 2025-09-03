@@ -21,6 +21,7 @@ func (g *Grid) Translate(dx, dy int) {
 func (g *Grid) Bitmap(rect Rectangle) [][]bool {
 
 	rect = *rect.Normalized()
+	minX, minY := rect.Min()
 
 	width := rect.Width()
 	height := rect.Height()
@@ -37,7 +38,7 @@ func (g *Grid) Bitmap(rect Rectangle) [][]bool {
 	sub := g.Subgrid(rect)
 	sub.mutex.RLock()
 	for c := range sub.cells {
-		bitmap[c.Y-rect.Y1][c.X-rect.X1] = true
+		bitmap[c.Y-minY][c.X-minX] = true
 	}
 	sub.mutex.RUnlock()
 
