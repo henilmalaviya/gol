@@ -32,11 +32,11 @@ func (g *Grid) Bitmap(rect Rectangle) [][]bool {
 	}
 
 	// Use Subgrid to filter cells within rect, avoiding duplicate bounds checks
-	sub := g.Subgrid(rect)
+	sub := g.SubgridNormalized(rect)
 	// No need to lock sub since it's isolated and not shared, but keep symmetry
 	sub.mutex.RLock()
 	for c := range sub.cells {
-		bitmap[c.Y-rect.Y1][c.X-rect.X1] = true
+		bitmap[c.Y][c.X] = true
 	}
 	sub.mutex.RUnlock()
 
