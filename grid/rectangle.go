@@ -29,25 +29,26 @@ func (r *Rectangle) ToArray() [4]int {
 	return [4]int{r.X1, r.Y1, r.X2, r.Y2}
 }
 
+func (r *Rectangle) Min() (int, int) {
+	return int(math.Min(float64(r.X1), float64(r.X2))), int(math.Min(float64(r.Y1), float64(r.Y2)))
+}
+
+func (r *Rectangle) Max() (int, int) {
+	return int(math.Max(float64(r.X1), float64(r.X2))), int(math.Max(float64(r.Y1), float64(r.Y2)))
+}
+
 // account for inverted cords
 func (r *Rectangle) PointInside(x, y int) bool {
-	if r.X1 > r.X2 {
-		r.X1, r.X2 = r.X2, r.X1
-	}
-	if r.Y1 > r.Y2 {
-		r.Y1, r.Y2 = r.Y2, r.Y1
-	}
-	return x >= r.X1 && x <= r.X2 && y >= r.Y1 && y <= r.Y2
+	minX, minY := r.Min()
+	maxX, maxY := r.Max()
+	return x >= minX && x <= maxX && y >= minY && y <= maxY
 }
 
 func (r *Rectangle) Normalized() *Rectangle {
 	nr := NewRectangle(r.X1, r.Y1, r.X2, r.Y2)
-	if nr.X1 > nr.X2 {
-		nr.X1, nr.X2 = nr.X2, nr.X1
-	}
-	if nr.Y1 > nr.Y2 {
-		nr.Y1, nr.Y2 = nr.Y2, nr.Y1
-	}
+	minX, minY := nr.Min()
+	maxX, maxY := nr.Max()
+	nr.X1, nr.Y1, nr.X2, nr.Y2 = minX, minY, maxX, maxY
 	return nr
 }
 
